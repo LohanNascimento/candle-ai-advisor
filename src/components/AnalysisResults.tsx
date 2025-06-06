@@ -165,6 +165,46 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
           </div>
         </div>
       </Card>
+
+      {/* Discrepancy Warning */}
+      {result.discrepancyWarning && (
+        <Card className="bg-yellow-500/10 border-yellow-500 border-2">
+          <div className="p-4">
+            <h4 className="font-semibold text-yellow-400 mb-2">Aviso de Discrepância</h4>
+            <p className="text-yellow-300 text-sm">{result.discrepancyWarning}</p>
+            {result.imageAnalysisDiscrepancy && (
+              <div className="mt-3 text-xs text-yellow-300">
+                <p><strong>Análise da Imagem (Divergente):</strong></p>
+                <p>Ação: {result.imageAnalysisDiscrepancy.action}</p>
+                <p>Confiança: {result.imageAnalysisDiscrepancy.confidence.toFixed(2)}%</p>
+                <p>Razão: {result.imageAnalysisDiscrepancy.reasoning}</p>
+                {result.imageAnalysisDiscrepancy.visual_patterns && (
+                  <p>Padrões Visuais: {result.imageAnalysisDiscrepancy.visual_patterns.join(', ')}</p>
+                )}
+              </div>
+            )}
+          </div>
+        </Card>
+      )}
+
+      {/* Image Analysis (if available and not discrepant) */}
+      {result.imageAnalysis && !result.discrepancyWarning && (
+        <Card className="bg-blue-500/10 border-blue-500 border-2">
+          <div className="p-4">
+            <h4 className="font-semibold text-blue-400 mb-2">Análise de Imagem Complementar</h4>
+            <p className="text-blue-300 text-sm">Esta análise visual complementa a análise de dados históricos.</p>
+            <div className="mt-3 text-xs text-blue-300">
+              <p><strong>Análise da Imagem:</strong></p>
+              <p>Ação: {result.imageAnalysis.action}</p>
+              <p>Confiança: {result.imageAnalysis.confidence.toFixed(2)}%</p>
+              <p>Razão: {result.imageAnalysis.reasoning}</p>
+              {result.imageAnalysis.visual_patterns && (
+                <p>Padrões Visuais: {result.imageAnalysis.visual_patterns.join(', ')}</p>
+              )}
+            </div>
+          </div>
+        </Card>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import ImageUpload from '@/components/ImageUpload';
+import AnalysisInput from '@/components/AnalysisInput';
 import AnalysisResults from '@/components/AnalysisResults';
 import RiskManager from '@/components/RiskManager';
 import { Card } from '@/components/ui/card';
@@ -19,6 +19,9 @@ export interface AnalysisResult {
   stopLoss: number;
   takeProfits: [number, number, number];
   reasoning: string;
+  discrepancyWarning?: string;
+  imageAnalysisDiscrepancy?: any; // Pode ser um objeto com os detalhes da análise da imagem divergente
+  imageAnalysis?: any; // Pode ser um objeto com os detalhes da análise da imagem
 }
 
 export interface RiskProfile {
@@ -28,7 +31,7 @@ export interface RiskProfile {
 }
 
 const Index = () => {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe | null>(null);
   const [riskProfile, setRiskProfile] = useState<RiskProfile>({
@@ -38,11 +41,7 @@ const Index = () => {
   });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  const handleImageUpload = (imageUrl: string) => {
-    setUploadedImage(imageUrl);
-    setAnalysisResult(null);
-    setSelectedTimeframe(null); // Reset timeframe when new image is uploaded
-  };
+
 
   const handleAnalysisComplete = (result: AnalysisResult) => {
     setAnalysisResult(result);
@@ -85,8 +84,7 @@ const Index = () => {
                   <BarChart3 className="h-6 w-6 text-blue-400" />
                   <h2 className="text-2xl font-semibold text-white">Upload do Gráfico</h2>
                 </div>
-                <ImageUpload 
-                  onImageUpload={handleImageUpload}
+                <AnalysisInput 
                   onAnalysisStart={() => setIsAnalyzing(true)}
                   onAnalysisComplete={handleAnalysisComplete}
                   riskProfile={riskProfile}
