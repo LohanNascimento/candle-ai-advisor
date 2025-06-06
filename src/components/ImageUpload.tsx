@@ -5,8 +5,9 @@ import { Card } from '@/components/ui/card';
 import { Upload, Image as ImageIcon, Loader2, Zap } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { analyzeChart } from '@/utils/analysisService';
-import { AnalysisResult, RiskProfile, Timeframe } from '@/pages/Index';
+import { AnalysisResult, RiskProfile, Timeframe, Asset } from '@/pages/Index';
 import TimeframeSelector from './TimeframeSelector';
+import AssetSelector from './AssetSelector';
 
 interface ImageUploadProps {
   onImageUpload: (imageUrl: string) => void;
@@ -14,7 +15,9 @@ interface ImageUploadProps {
   onAnalysisComplete: (result: AnalysisResult) => void;
   riskProfile: RiskProfile;
   selectedTimeframe: Timeframe | null;
+  selectedAsset: Asset | null;
   onTimeframeChange: (timeframe: Timeframe) => void;
+  onAssetChange: (asset: Asset) => void;
 }
 
 const ImageUpload = ({ 
@@ -23,7 +26,9 @@ const ImageUpload = ({
   onAnalysisComplete, 
   riskProfile,
   selectedTimeframe,
-  onTimeframeChange
+  selectedAsset,
+  onTimeframeChange,
+  onAssetChange
 }: ImageUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
@@ -70,17 +75,17 @@ const ImageUpload = ({
   };
 
   const handleAnalyze = async () => {
-    if (!uploadedImage || !selectedTimeframe) return;
+    if (!uploadedImage || !selectedTimeframe || !selectedAsset) return;
     
     setIsAnalyzing(true);
     onAnalysisStart();
     
     try {
-      const result = await analyzeChart(uploadedImage, riskProfile, selectedTimeframe);
+      const result = await analyzeChart(uploadedImage, riskProfile, selectedTimeframe, selectedAsset);
       onAnalysisComplete(result);
       toast({
         title: "Análise Concluída",
-        description: "A IA analisou seu gráfico com sucesso!",
+        description: `A IA analisou o gráfico de ${selectedAsset.symbol} com sucesso!`,
       });
     } catch (error) {
       toast({
@@ -93,7 +98,14 @@ const ImageUpload = ({
     }
   };
 
-  const canAnalyze = uploadedImage && selectedTimeframe && !isAnalyzing;
+  const canAnalyze = uploadedImage && selectedTimeframe && selectedAsset && !isAnalyzing;
+
+  const getButtonText = () => {
+    if (isAnalyzing) return 'Analisando...';
+    if (!selectedAsset) return 'Selecione o Ativo';
+    if (!selectedTimeframe) return 'Selecione o Timeframe';
+    return `Analisar ${selectedAsset.symbol}`;
+  };
 
   return (
     <div className="space-y-6">
@@ -161,8 +173,18 @@ const ImageUpload = ({
         className="hidden"
       />
 
-      {/* Timeframe Selection */}
+      {/* Asset Selection */}
       {uploadedImage && (
+        <Card className="bg-slate-800/30 border-slate-700 p-6">
+          <AssetSelector 
+            selectedAsset={selectedAsset}
+            onAssetChange={onAssetChange}
+          />
+        </Card>
+      )}
+
+      {/* Timeframe Selection */}
+      {uploadedImage && selectedAsset && (
         <Card className="bg-slate-800/30 border-slate-700 p-6">
           <TimeframeSelector 
             selectedTimeframe={selectedTimeframe}
@@ -188,15 +210,10 @@ const ImageUpload = ({
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 Analisando...
               </>
-            ) : !selectedTimeframe ? (
-              <>
-                <Zap className="mr-2 h-5 w-5" />
-                Selecione o Timeframe
-              </>
             ) : (
               <>
                 <Zap className="mr-2 h-5 w-5" />
-                Analisar com IA
+                {getButtonText()}
               </>
             )}
           </Button>
