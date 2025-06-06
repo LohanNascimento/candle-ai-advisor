@@ -175,11 +175,11 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
             {result.imageAnalysisDiscrepancy && (
               <div className="mt-3 text-xs text-yellow-300">
                 <p><strong>Análise da Imagem (Divergente):</strong></p>
-                <p>Ação: {result.imageAnalysisDiscrepancy.action}</p>
-                <p>Confiança: {result.imageAnalysisDiscrepancy.confidence.toFixed(2)}%</p>
-                <p>Razão: {result.imageAnalysisDiscrepancy.reasoning}</p>
-                {result.imageAnalysisDiscrepancy.visual_patterns && (
-                  <p>Padrões Visuais: {result.imageAnalysisDiscrepancy.visual_patterns.join(', ')}</p>
+                <p>Ação: {(result.imageAnalysisDiscrepancy as { action: string }).action}</p>
+                <p>Confiança: {(result.imageAnalysisDiscrepancy as { confidence: number }).confidence.toFixed(2)}%</p>
+                <p>Razão: {(result.imageAnalysisDiscrepancy as { reasoning: string }).reasoning}</p>
+                {(result.imageAnalysisDiscrepancy as { visual_patterns?: string[] }).visual_patterns && (
+                  <p>Padrões Visuais: {((result.imageAnalysisDiscrepancy as { visual_patterns?: string[] }).visual_patterns || []).join(', ')}</p>
                 )}
               </div>
             )}
@@ -195,11 +195,11 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
             <p className="text-blue-300 text-sm">Esta análise visual complementa a análise de dados históricos.</p>
             <div className="mt-3 text-xs text-blue-300">
               <p><strong>Análise da Imagem:</strong></p>
-              <p>Ação: {result.imageAnalysis.action}</p>
-              <p>Confiança: {result.imageAnalysis.confidence.toFixed(2)}%</p>
-              <p>Razão: {result.imageAnalysis.reasoning}</p>
-              {result.imageAnalysis.visual_patterns && (
-                <p>Padrões Visuais: {result.imageAnalysis.visual_patterns.join(', ')}</p>
+              <p>Ação: {(result.imageAnalysis as { action: string }).action}</p>
+              <p>Confiança: {(result.imageAnalysis as { confidence: number }).confidence.toFixed(2)}%</p>
+              <p>Razão: {(result.imageAnalysis as { reasoning: string }).reasoning}</p>
+              {(result.imageAnalysis as { visual_patterns?: string[] }).visual_patterns && (
+                <p>Padrões Visuais: {((result.imageAnalysis as { visual_patterns?: string[] }).visual_patterns || []).join(', ')}</p>
               )}
             </div>
           </div>

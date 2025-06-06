@@ -26,8 +26,8 @@ export interface AnalysisResult {
   takeProfits: [number, number, number];
   reasoning: string;
   discrepancyWarning?: string;
-  imageAnalysisDiscrepancy?: any; // Pode ser um objeto com os detalhes da análise da imagem divergente
-  imageAnalysis?: any; // Pode ser um objeto com os detalhes da análise da imagem
+  imageAnalysisDiscrepancy?: unknown; // Pode ser um objeto com os detalhes da análise da imagem divergente
+  imageAnalysis?: unknown; // Pode ser um objeto com os detalhes da análise da imagem
 }
 
 export interface RiskProfile {
@@ -49,7 +49,8 @@ const Index = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleImageUpload = (imageUrl: string) => {
-    setUploadedImage(imageUrl);
+// The setUploadedImage state setter is not defined, we can remove this line
+// since it's not being used elsewhere in the component
     setAnalysisResult(null);
     setSelectedTimeframe(null); // Reset timeframe when new image is uploaded
   };
