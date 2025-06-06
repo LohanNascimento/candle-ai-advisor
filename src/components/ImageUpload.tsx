@@ -5,16 +5,26 @@ import { Card } from '@/components/ui/card';
 import { Upload, Image as ImageIcon, Loader2, Zap } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { analyzeChart } from '@/utils/analysisService';
-import { AnalysisResult, RiskProfile } from '@/pages/Index';
+import { AnalysisResult, RiskProfile, Timeframe } from '@/pages/Index';
+import TimeframeSelector from './TimeframeSelector';
 
 interface ImageUploadProps {
   onImageUpload: (imageUrl: string) => void;
   onAnalysisStart: () => void;
   onAnalysisComplete: (result: AnalysisResult) => void;
   riskProfile: RiskProfile;
+  selectedTimeframe: Timeframe | null;
+  onTimeframeChange: (timeframe: Timeframe) => void;
 }
 
-const ImageUpload = ({ onImageUpload, onAnalysisStart, onAnalysisComplete, riskProfile }: ImageUploadProps) => {
+const ImageUpload = ({ 
+  onImageUpload, 
+  onAnalysisStart, 
+  onAnalysisComplete, 
+  riskProfile,
+  selectedTimeframe,
+  onTimeframeChange
+}: ImageUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -60,13 +70,13 @@ const ImageUpload = ({ onImageUpload, onAnalysisStart, onAnalysisComplete, riskP
   };
 
   const handleAnalyze = async () => {
-    if (!uploadedImage) return;
+    if (!uploadedImage || !selectedTimeframe) return;
     
     setIsAnalyzing(true);
     onAnalysisStart();
     
     try {
-      const result = await analyzeChart(uploadedImage, riskProfile);
+      const result = await analyzeChart(uploadedImage, riskProfile, selectedTimeframe);
       onAnalysisComplete(result);
       toast({
         title: "Análise Concluída",
@@ -82,6 +92,8 @@ const ImageUpload = ({ onImageUpload, onAnalysisStart, onAnalysisComplete, riskP
       setIsAnalyzing(false);
     }
   };
+
+  const canAnalyze = uploadedImage && selectedTimeframe && !isAnalyzing;
 
   return (
     <div className="space-y-6">
@@ -149,18 +161,37 @@ const ImageUpload = ({ onImageUpload, onAnalysisStart, onAnalysisComplete, riskP
         className="hidden"
       />
 
+      {/* Timeframe Selection */}
+      {uploadedImage && (
+        <Card className="bg-slate-800/30 border-slate-700 p-6">
+          <TimeframeSelector 
+            selectedTimeframe={selectedTimeframe}
+            onTimeframeChange={onTimeframeChange}
+          />
+        </Card>
+      )}
+
       {/* Analyze Button */}
       {uploadedImage && (
         <div className="flex gap-4">
           <Button
             onClick={handleAnalyze}
-            disabled={isAnalyzing}
-            className="flex-1 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3"
+            disabled={!canAnalyze}
+            className={`flex-1 font-semibold py-3 ${
+              canAnalyze 
+                ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white'
+                : 'bg-slate-600 text-slate-400 cursor-not-allowed'
+            }`}
           >
             {isAnalyzing ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 Analisando...
+              </>
+            ) : !selectedTimeframe ? (
+              <>
+                <Zap className="mr-2 h-5 w-5" />
+                Selecione o Timeframe
               </>
             ) : (
               <>

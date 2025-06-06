@@ -6,6 +6,12 @@ import RiskManager from '@/components/RiskManager';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, BarChart3, Shield } from 'lucide-react';
 
+export interface Timeframe {
+  category: 'scalp' | 'swing';
+  value: '1m' | '3m' | '5m' | '1h' | '4h' | '1d' | '1w';
+  label: string;
+}
+
 export interface AnalysisResult {
   recommendation: 'buy' | 'sell' | 'hold';
   confidence: number;
@@ -24,6 +30,7 @@ export interface RiskProfile {
 const Index = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe | null>(null);
   const [riskProfile, setRiskProfile] = useState<RiskProfile>({
     type: 'moderate',
     maxRisk: 2,
@@ -34,6 +41,7 @@ const Index = () => {
   const handleImageUpload = (imageUrl: string) => {
     setUploadedImage(imageUrl);
     setAnalysisResult(null);
+    setSelectedTimeframe(null); // Reset timeframe when new image is uploaded
   };
 
   const handleAnalysisComplete = (result: AnalysisResult) => {
@@ -43,6 +51,10 @@ const Index = () => {
 
   const handleRiskProfileChange = (profile: RiskProfile) => {
     setRiskProfile(profile);
+  };
+
+  const handleTimeframeChange = (timeframe: Timeframe) => {
+    setSelectedTimeframe(timeframe);
   };
 
   return (
@@ -78,6 +90,8 @@ const Index = () => {
                   onAnalysisStart={() => setIsAnalyzing(true)}
                   onAnalysisComplete={handleAnalysisComplete}
                   riskProfile={riskProfile}
+                  selectedTimeframe={selectedTimeframe}
+                  onTimeframeChange={handleTimeframeChange}
                 />
               </div>
             </Card>
