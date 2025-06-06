@@ -6,6 +6,12 @@ import RiskManager from '@/components/RiskManager';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, BarChart3, Shield } from 'lucide-react';
 
+export interface Asset {
+  symbol: string;
+  name: string;
+  category: 'crypto' | 'stocks' | 'forex' | 'indices';
+}
+
 export interface Timeframe {
   category: 'scalp' | 'swing';
   value: '1m' | '3m' | '5m' | '1h' | '4h' | '1d' | '1w';
@@ -34,6 +40,7 @@ const Index = () => {
 
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [riskProfile, setRiskProfile] = useState<RiskProfile>({
     type: 'moderate',
     maxRisk: 2,
@@ -41,7 +48,11 @@ const Index = () => {
   });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-
+  const handleImageUpload = (imageUrl: string) => {
+    setUploadedImage(imageUrl);
+    setAnalysisResult(null);
+    setSelectedTimeframe(null); // Reset timeframe when new image is uploaded
+  };
 
   const handleAnalysisComplete = (result: AnalysisResult) => {
     setAnalysisResult(result);
@@ -54,6 +65,10 @@ const Index = () => {
 
   const handleTimeframeChange = (timeframe: Timeframe) => {
     setSelectedTimeframe(timeframe);
+  };
+
+  const handleAssetChange = (asset: Asset) => {
+    setSelectedAsset(asset);
   };
 
   return (
@@ -89,7 +104,9 @@ const Index = () => {
                   onAnalysisComplete={handleAnalysisComplete}
                   riskProfile={riskProfile}
                   selectedTimeframe={selectedTimeframe}
+                  selectedAsset={selectedAsset}
                   onTimeframeChange={handleTimeframeChange}
+                  onAssetChange={handleAssetChange}
                 />
               </div>
             </Card>
