@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import AnalysisInput from '@/components/AnalysisInput';
+import ImageUpload from '@/components/ImageUpload';
 import AnalysisModal from '@/components/AnalysisModal';
 import RiskManager from '@/components/RiskManager';
 import { Card } from '@/components/ui/card';
@@ -26,8 +25,8 @@ export interface AnalysisResult {
   takeProfits: [number, number, number];
   reasoning: string;
   discrepancyWarning?: string;
-  imageAnalysisDiscrepancy?: unknown; // Pode ser um objeto com os detalhes da análise da imagem divergente
-  imageAnalysis?: unknown; // Pode ser um objeto com os detalhes da análise da imagem
+  imageAnalysisDiscrepancy?: unknown;
+  imageAnalysis?: unknown;
 }
 
 export interface RiskProfile {
@@ -111,7 +110,8 @@ const Index = () => {
                   <BarChart3 className="h-6 w-6 text-blue-400" />
                   <h2 className="text-2xl font-semibold text-white">Upload do Gráfico</h2>
                 </div>
-                <AnalysisInput 
+                <ImageUpload 
+                  onImageUpload={handleImageUpload}
                   onAnalysisStart={() => setIsAnalyzing(true)}
                   onAnalysisComplete={handleAnalysisComplete}
                   riskProfile={riskProfile}
