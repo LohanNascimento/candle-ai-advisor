@@ -81,7 +81,7 @@ const ImageUpload = ({
     onAnalysisStart();
     
     try {
-      const result = await analyzeChart(uploadedImage, riskProfile, selectedTimeframe);
+      const result = await analyzeChart(uploadedImage, riskProfile, selectedTimeframe, selectedAsset);
       onAnalysisComplete(result);
       toast({
         title: "Análise Concluída",
@@ -173,24 +173,22 @@ const ImageUpload = ({
         className="hidden"
       />
 
-      {/* Asset Selection */}
+      {/* Asset and Timeframe Selection */}
       {uploadedImage && (
-        <Card className="bg-slate-800/30 border-slate-700 p-6">
-          <AssetSelector 
-            selectedAsset={selectedAsset}
-            onAssetChange={onAssetChange}
-          />
-        </Card>
-      )}
-
-      {/* Timeframe Selection */}
-      {uploadedImage && selectedAsset && (
-        <Card className="bg-slate-800/30 border-slate-700 p-6">
-          <TimeframeSelector 
-            selectedTimeframe={selectedTimeframe}
-            onTimeframeChange={onTimeframeChange}
-          />
-        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-slate-800/30 border-slate-700 p-6">
+            <AssetSelector 
+              selectedAsset={selectedAsset}
+              onAssetChange={onAssetChange}
+            />
+          </Card>
+          <Card className="bg-slate-800/30 border-slate-700 p-6">
+            <TimeframeSelector 
+              selectedTimeframe={selectedTimeframe}
+              onTimeframeChange={onTimeframeChange}
+            />
+          </Card>
+        </div>
       )}
 
       {/* Analyze Button */}
