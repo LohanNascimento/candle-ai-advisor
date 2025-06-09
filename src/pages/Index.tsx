@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import AnalysisInput from '@/components/AnalysisInput';
+import ImageUpload from '@/components/ImageUpload';
 import AnalysisResults from '@/components/AnalysisResults';
 import RiskManager from '@/components/RiskManager';
 import { Card } from '@/components/ui/card';
@@ -14,7 +14,7 @@ export interface Asset {
 
 export interface Timeframe {
   category: 'scalp' | 'swing';
-  value: '1m' | '3m' | '5m' | '1h' | '4h' | '1d' | '1w';
+  value: '1m' | '3m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '1w';
   label: string;
 }
 
@@ -100,7 +100,7 @@ const Index = () => {
                   <BarChart3 className="h-6 w-6 text-blue-400" />
                   <h2 className="text-2xl font-semibold text-white">Upload do Gráfico</h2>
                 </div>
-                <AnalysisInput
+                <ImageUpload
                   onImageUpload={handleImageUpload}
                   onAnalysisStart={() => setIsAnalyzing(true)}
                   onAnalysisComplete={handleAnalysisComplete}

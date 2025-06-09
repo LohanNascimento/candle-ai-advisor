@@ -14,6 +14,8 @@ const TimeframeSelector = ({ selectedTimeframe, onTimeframeChange }: TimeframeSe
     { category: 'scalp', value: '1m', label: '1 Minuto' },
     { category: 'scalp', value: '3m', label: '3 Minutos' },
     { category: 'scalp', value: '5m', label: '5 Minutos' },
+    { category:'scalp', value: '15m', label: '15 Minutos' },
+    { category:'scalp', value: '30m', label: '30 Minutos' },
   ];
 
   const swingTimeframes: Timeframe[] = [
@@ -36,7 +38,7 @@ const TimeframeSelector = ({ selectedTimeframe, onTimeframeChange }: TimeframeSe
         <div className="flex items-center gap-2 mb-3">
           <Timer className="h-5 w-5 text-red-400" />
           <h4 className="font-medium text-red-400">Scalp Trading</h4>
-          <span className="text-sm text-slate-400">(1m - 5m)</span>
+          <span className="text-sm text-slate-400">(1m - 30m)</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {scalpTimeframes.map((timeframe) => (

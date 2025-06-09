@@ -9,6 +9,7 @@ import { AnalysisResult, RiskProfile, Timeframe, Asset } from '@/pages/Index';
 import TimeframeSelector from './TimeframeSelector';
 import AssetSelector from './AssetSelector';
 
+
 interface ImageUploadProps {
   onImageUpload: (imageUrl: string) => void;
   onAnalysisStart: () => void;

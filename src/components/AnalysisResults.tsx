@@ -73,7 +73,9 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-white">{result.confidence}%</div>
+              <div className="text-2xl font-bold text-white">
+                {result.confidence ? result.confidence.toFixed(2) : 'N/A'}%
+              </div>
               <p className="text-sm text-slate-400">Confiança</p>
             </div>
           </div>
@@ -81,7 +83,7 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
           <div className="mb-4">
             <div className="flex justify-between text-sm text-slate-400 mb-2">
               <span>Nível de Confiança</span>
-              <span>{result.confidence}%</span>
+              <span>{result.confidence ? result.confidence.toFixed(2) : 'N/A'}%</span>
             </div>
             <Progress value={result.confidence} className="h-2" />
           </div>
@@ -100,7 +102,7 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
               <h4 className="font-semibold text-white">Preço de Entrada</h4>
             </div>
             <div className="text-2xl font-bold text-blue-400">
-              ${result.entryPrice.toFixed(2)}
+              ${result.entryPrice ? result.entryPrice.toFixed(2) : 'N/A'}
             </div>
           </div>
         </Card>
@@ -113,7 +115,7 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
               <h4 className="font-semibold text-white">Stop Loss</h4>
             </div>
             <div className="text-2xl font-bold text-red-400">
-              ${result.stopLoss.toFixed(2)}
+              ${result.stopLoss ? result.stopLoss.toFixed(2) : 'N/A'}
             </div>
           </div>
         </Card>
@@ -134,7 +136,7 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
                   TP {index + 1}
                 </Badge>
                 <div className="text-xl font-bold text-green-400">
-                  ${tp.toFixed(2)}
+                  {typeof tp === 'number' ? tp.toFixed(2) : 'N/A'}
                 </div>
                 <div className="text-sm text-slate-400">
                   {((tp - result.entryPrice) / result.entryPrice * 100).toFixed(1)}%
@@ -199,7 +201,7 @@ const AnalysisResults = ({ result, isLoading }: AnalysisResultsProps) => {
               <p>Confiança: {(result.imageAnalysis as { confidence: number }).confidence.toFixed(2)}%</p>
               <p>Razão: {(result.imageAnalysis as { reasoning: string }).reasoning}</p>
               {(result.imageAnalysis as { visual_patterns?: string[] }).visual_patterns && (
-                <p>Padrões Visuais: {((result.imageAnalysis as { visual_patterns?: string[] }).visual_patterns || []).join(', ')}</p>
+                <p>Padrões Visuais: {Array.isArray((result.imageAnalysis as { visual_patterns?: string[] }).visual_patterns) ? (result.imageAnalysis as { visual_patterns?: string[] }).visual_patterns.join(', ') : 'N/A'}</p>
               )}
             </div>
           </div>
