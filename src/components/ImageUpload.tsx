@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -81,7 +82,7 @@ const ImageUpload = ({
     onAnalysisStart();
     
     try {
-      const result = await analyzeChart(uploadedImage, riskProfile, selectedTimeframe);
+      const result = await analyzeChart(uploadedImage, riskProfile, selectedTimeframe, selectedAsset);
       onAnalysisComplete(result);
       toast({
         title: "Análise Concluída",
