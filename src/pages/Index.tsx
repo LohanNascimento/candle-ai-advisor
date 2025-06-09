@@ -1,6 +1,5 @@
-
 import { useState } from 'react';
-import ImageUpload from '@/components/ImageUpload';
+import AnalysisInput from '@/components/AnalysisInput';
 import AnalysisResults from '@/components/AnalysisResults';
 import RiskManager from '@/components/RiskManager';
 import { Card } from '@/components/ui/card';
@@ -26,8 +25,8 @@ export interface AnalysisResult {
   takeProfits: [number, number, number];
   reasoning: string;
   discrepancyWarning?: string;
-  imageAnalysisDiscrepancy?: unknown; // Pode ser um objeto com os detalhes da análise da imagem divergente
-  imageAnalysis?: unknown; // Pode ser um objeto com os detalhes da análise da imagem
+  imageAnalysisDiscrepancy?: unknown;
+  imageAnalysis?: unknown;
 }
 
 export interface RiskProfile {
@@ -37,7 +36,6 @@ export interface RiskProfile {
 }
 
 const Index = () => {
-
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe | null>(null);
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
@@ -47,17 +45,18 @@ const Index = () => {
     positionSize: 1
   });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
 
   const handleImageUpload = (imageUrl: string) => {
-// The setUploadedImage state setter is not defined, we can remove this line
-// since it's not being used elsewhere in the component
     setAnalysisResult(null);
-    setSelectedTimeframe(null); // Reset timeframe when new image is uploaded
+    setSelectedTimeframe(null);
+    setIsResultModalOpen(false);
   };
 
   const handleAnalysisComplete = (result: AnalysisResult) => {
     setAnalysisResult(result);
     setIsAnalyzing(false);
+    setIsResultModalOpen(true);
   };
 
   const handleRiskProfileChange = (profile: RiskProfile) => {
@@ -70,6 +69,17 @@ const Index = () => {
 
   const handleAssetChange = (asset: Asset) => {
     setSelectedAsset(asset);
+  };
+
+  const handleCloseModal = () => {
+    setIsResultModalOpen(false);
+  };
+
+  const handleNewAnalysis = () => {
+    setIsResultModalOpen(false);
+    setAnalysisResult(null);
+    setSelectedTimeframe(null);
+    setSelectedAsset(null);
   };
 
   return (
@@ -100,8 +110,7 @@ const Index = () => {
                   <BarChart3 className="h-6 w-6 text-blue-400" />
                   <h2 className="text-2xl font-semibold text-white">Upload do Gráfico</h2>
                 </div>
-                <ImageUpload
-                  onImageUpload={handleImageUpload}
+                <AnalysisInput 
                   onAnalysisStart={() => setIsAnalyzing(true)}
                   onAnalysisComplete={handleAnalysisComplete}
                   riskProfile={riskProfile}
@@ -112,19 +121,6 @@ const Index = () => {
                 />
               </div>
             </Card>
-
-            {/* Analysis Results */}
-            {(analysisResult || isAnalyzing) && (
-              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm mt-8">
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold text-white mb-6">Resultado da Análise</h2>
-                  <AnalysisResults 
-                    result={analysisResult}
-                    isLoading={isAnalyzing}
-                  />
-                </div>
-              </Card>
-            )}
           </div>
 
           {/* Risk Manager Sidebar */}
@@ -144,6 +140,16 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Analysis Results Modal */}
+      <AnalysisModal
+        isOpen={isResultModalOpen}
+        onClose={handleCloseModal}
+        onNewAnalysis={handleNewAnalysis}
+        result={analysisResult}
+        isLoading={isAnalyzing}
+        selectedAsset={selectedAsset}
+      />
     </div>
   );
 };
