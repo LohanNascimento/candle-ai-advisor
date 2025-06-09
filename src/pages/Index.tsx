@@ -100,7 +100,8 @@ const Index = () => {
                   <BarChart3 className="h-6 w-6 text-blue-400" />
                   <h2 className="text-2xl font-semibold text-white">Upload do Gráfico</h2>
                 </div>
-                <AnalysisInput 
+                <AnalysisInput
+                  onImageUpload={handleImageUpload}
                   onAnalysisStart={() => setIsAnalyzing(true)}
                   onAnalysisComplete={handleAnalysisComplete}
                   riskProfile={riskProfile}

@@ -5,7 +5,8 @@ import { AnalysisResult, RiskProfile, Timeframe, Asset } from '@/pages/Index';
 export const analyzeChart = async (
   imageUrl: string, 
   riskProfile: RiskProfile, 
-  timeframe: Timeframe
+  timeframe: Timeframe,
+  asset: Asset // Adicionar asset
 ): Promise<AnalysisResult> => {
   // Simula tempo de processamento da IA
   await new Promise(resolve => setTimeout(resolve, 3000));
@@ -33,7 +34,7 @@ export const analyzeChart = async (
         basePrice * (1 + volatility * 2.5),
         basePrice * (1 + volatility * 4)
       ] as [number, number, number],
-      reasoning: `Padrão de alta identificado no timeframe ${timeframe.label}. ${
+      reasoning: `Padrão de alta identificado para ${asset.name} no timeframe ${timeframe.label}. ${
         timeframe.category === 'scalp' 
           ? 'Movimento rápido esperado com entrada e saída em minutos. Volume crescente confirma breakout.'
           : 'Tendência de alta sustentável identificada. Padrão confirma movimento de médio prazo.'
@@ -49,7 +50,7 @@ export const analyzeChart = async (
         basePrice * (1 - volatility * 2.5),
         basePrice * (1 - volatility * 4)
       ] as [number, number, number],
-      reasoning: `Formação bearish identificada no timeframe ${timeframe.label}. ${
+      reasoning: `Formação bearish identificada para ${asset.name} no timeframe ${timeframe.label}. ${
         timeframe.category === 'scalp'
           ? 'Pressão vendedora intensa detectada. Movimento de queda rápido esperado.'
           : 'Topo duplo confirmado com divergência bearish. Tendência de baixa de médio prazo.'
@@ -65,7 +66,7 @@ export const analyzeChart = async (
         basePrice * (1 + volatility * 1.2),
         basePrice * (1 + volatility * 2)
       ] as [number, number, number],
-      reasoning: `Consolidação lateral detectada no timeframe ${timeframe.label}. ${
+      reasoning: `Consolidação lateral detectada para ${asset.name} no timeframe ${timeframe.label}. ${
         timeframe.category === 'scalp'
           ? 'Mercado em range. Aguardar breakout para definir direção de scalp.'
           : 'Padrão de acumulação identificado. Aguardar rompimento da faixa para entrada de swing.'
