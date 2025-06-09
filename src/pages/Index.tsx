@@ -1,6 +1,8 @@
+
 import { useState } from 'react';
 import AnalysisInput from '@/components/AnalysisInput';
 import AnalysisResults from '@/components/AnalysisResults';
+import AnalysisModal from '@/components/AnalysisModal';
 import RiskManager from '@/components/RiskManager';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, BarChart3, Shield } from 'lucide-react';
