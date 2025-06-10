@@ -19,6 +19,22 @@ export interface Timeframe {
   label: string;
 }
 
+export interface ImageAnalysis {
+  action: 'BUY' | 'SELL' | 'HOLD' | 'buy' | 'sell' | 'hold';
+  confidence: number;
+  reasoning: string;
+  visual_patterns?: string[];
+  support_levels?: number[];
+  resistance_levels?: number[];
+  trend_direction?: 'UP' | 'DOWN' | 'SIDEWAYS';
+  
+  // Campos alternativos para compatibilidade
+  visualPatterns?: string[];
+  supportLevels?: number[];
+  resistanceLevels?: number[];
+  trendDirection?: 'UP' | 'DOWN' | 'SIDEWAYS';
+}
+
 export interface AnalysisResult {
   recommendation: 'buy' | 'sell' | 'hold';
   confidence: number;
@@ -27,8 +43,15 @@ export interface AnalysisResult {
   takeProfits: [number, number, number];
   reasoning: string;
   discrepancyWarning?: string;
-  imageAnalysisDiscrepancy?: unknown;
-  imageAnalysis?: unknown;
+  imageAnalysisDiscrepancy?: ImageAnalysis;
+  imageAnalysis?: ImageAnalysis;
+  
+  // Campos adicionais para compatibilidade com a resposta da API
+  action?: 'buy' | 'sell' | 'hold';
+  support_levels?: number[];
+  resistance_levels?: number[];
+  trend_direction?: 'UP' | 'DOWN' | 'SIDEWAYS';
+  visual_patterns?: string[];
 }
 
 export interface RiskProfile {

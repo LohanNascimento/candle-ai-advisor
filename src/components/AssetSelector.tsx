@@ -35,10 +35,10 @@ const AssetSelector = ({ selectedAsset, onAssetChange }: AssetSelectorProps) => 
       { symbol: 'AUDUSD', name: 'Dólar Australiano/Dólar', category: 'forex' as const },
     ],
     indices: [
-      { symbol: 'IBOV', name: 'Ibovespa', category: 'indices' as const },
-      { symbol: 'SPY', name: 'S&P 500', category: 'indices' as const },
-      { symbol: 'QQQ', name: 'Nasdaq 100', category: 'indices' as const },
-      { symbol: 'DXY', name: 'Índice do Dólar', category: 'indices' as const },
+      { symbol: '^BVSP', name: 'Ibovespa', category: 'indices' as const },
+      { symbol: '^GSPC', name: 'S&P 500', category: 'indices' as const },
+      { symbol: '^IXIC', name: 'Nasdaq 100', category: 'indices' as const },
+      { symbol: '^DJI', name: 'Dow Jones', category: 'indices' as const },
     ],
   };
 
